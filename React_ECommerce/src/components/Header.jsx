@@ -4,7 +4,8 @@ import { CiShoppingBasket } from "react-icons/ci";
 import { CiLight } from "react-icons/ci";
 import { IoIosMoon } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-
+import Badge from '@mui/material/Badge';
+import { useSelector } from 'react-redux';
 
 function Header() {
     const [theme, setTheme] = useState(true);
@@ -27,6 +28,8 @@ function Header() {
         setTheme(!theme);
     }
 
+    const { products } = useSelector((store) => store.basket);
+
     return (
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <div className='flex-row' onClick={() => navigate("/")}>
@@ -38,7 +41,10 @@ function Header() {
                 <div>
                     {theme ? <IoIosMoon className='icon' onClick={changeTheme} /> : <CiLight className='icon' onClick={changeTheme} />}
 
-                    <CiShoppingBasket className='icon' />
+                    <Badge badgeContent={products.length} color="primary">
+                        <CiShoppingBasket className='icon' style={{ marginRight: '6px' }} />
+                    </Badge>
+
                 </div>
             </div>
         </div>

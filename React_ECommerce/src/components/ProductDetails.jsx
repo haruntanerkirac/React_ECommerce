@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { setSelectedProduct } from '../redux/slices/productSlice';
 import '../css/Product.css'
-import { CiCirclePlus, CiSquareMinus } from "react-icons/ci";
+import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleMinus } from "react-icons/ci";
+import { addProductToBasket } from '../redux/slices/basketSlice';
 
 
 function ProductDetails() {
@@ -23,12 +24,24 @@ function ProductDetails() {
         }
     }
 
+    const handleProductToBasket = () => {
+        const payload = {
+            id,
+            price,
+            image,
+            title,
+            description,
+            count
+        }
+
+        dispatch(addProductToBasket(payload));
+    }
+
     const getProductById = () => {
-        products && products.map((product) => {
-            if (product.id == id) {
-                dispatch(setSelectedProduct(product));
-            }
-        })
+        const foundProduct = products.find(product => product.id == id);
+        if (foundProduct) {
+            dispatch(setSelectedProduct(foundProduct));
+        }
     }
 
     useEffect(() => {
@@ -50,7 +63,7 @@ function ProductDetails() {
                         <CiCirclePlus style={{ fontSize: '40px', marginRight: '5px' }} onClick={increment} /><span style={{ fontSize: '35px' }}> {count}  </span> <CiCircleMinus style={{ fontSize: '40px', marginLeft: '5px' }} onClick={decrement} />
                     </div>
                     <div>
-                        <button className='basket-button'>Sepete Ekle</button>
+                        <button className='basket-button' onClick={handleProductToBasket}>Sepete Ekle</button>
                     </div>
                 </div>
             </div>
